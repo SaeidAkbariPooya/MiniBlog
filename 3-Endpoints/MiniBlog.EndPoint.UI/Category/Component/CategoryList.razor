@@ -1,0 +1,99 @@
+﻿@page "/categories"
+@inject Microsoft.AspNetCore.Components.NavigationManager navigation
+@*@inject IJSRuntime JsRuntime*@
+
+<PageTitle>لیست دسته بندی ها</PageTitle>
+
+<h1>لیست دسته بندی ها</h1>
+<button class="btn btn-primary mb-2" @onclick="@(() => navigation.NavigateTo("/category/create"))">افزودن</button>
+@if (catList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>عنوان</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in catList.QueryResult)
+            {
+                <tr>
+                    <td>
+                        @counter @{
+                            counter++;
+                        }
+                    </td>
+                    <td>@item.Title</td>
+                    <td>
+                        <button class="btn btn-info" @onclick="@(() => navigation.NavigateTo($"/category/update/{item.Id}"))">ویرایش</button>
+                        @*<button class="btn btn-danger" @onclick="() => HandleDelete(item.Id)">حذف خبر</button>*@
+                        <button class="btn btn-danger" @onclick="() => ModalOk(item.Id)">حذف</button>
+                        @*<button class="btn btn-danger" @onclick="@ModalShow">Delete</button>*@
+                    </td>
+                </tr>
+
+                @if (showModal)
+                {
+                    <div class="modal fade show" id="myModal" style="display:block" aria-modal="true" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Confirm action</h4>
+                                    <button type="button" class="close" @onclick="@ModalCancel">&times;</button>
+                                </div>
+
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                    <p>This is the modal content!</p>
+                                </div>
+
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn" @onclick="@ModalCancel">لفو</button>
+                                    <button class="btn btn-danger" @onclick="@Delete">حذف</button>
+                                    @*<button class="btn btn-danger" @onclick="() => Delete(item.Id)">Delete</button>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </tbody>
+    </table>
+}
+@*<DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>*@
+
+
+@*@code {
+    private long? DeleteNewsId { get; set; }
+    private bool IsConfirm { get; set; }
+    public bool IsProcessing { get; set; } = false;
+    private async Task HandleDelete(long newsId)
+    {
+        DeleteNewsId = newsId;
+        await JsRuntime.InvokeVoidAsync("showConfirmationModal");
+    }
+
+    public async Task ConfirmDelete_Click(bool isConfirmed)
+    {
+        IsProcessing = true;
+        if (isConfirmed && DeleteNewsId != null)
+        {
+            //var news = await NewsRepository.GetNewsById(DeleteNewsId.Value);
+            //await NewsRepository.RemoveNews(news);
+            //FileUploadService.DeleteFile(news.ImageName);
+            //await JsRuntime.ToastrSuccess("خبر مورد نظر با موفقیت حذف شد");
+            //Newses = await NewsRepository.GetAllNewses();
+        }
+
+        await JsRuntime.InvokeVoidAsync("hideConfirmationModal");
+        IsProcessing = false;
+    }
+}*@

@@ -1,0 +1,33 @@
+﻿@page "/blog/create"
+<h3>افزودن خبر</h3>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="Name" class="control-label">عنوان</label>
+            <input for="Name" class="form-control" @bind="@model.Title" />
+
+            <label for="Name" class="control-label">متن</label>
+            <input for="Name" class="form-control" @bind="@model.Description" />
+        </div>
+        <div class="form-group mt-2">
+            <label for="Name" class="control-label">دسته بندی</label>
+            <select class="form-select" aria-label="Select category" @bind="@SelectedCategories" multiple>
+                @foreach (var item in categories)
+                {
+                    <option value="@item.Id">@item.Title</option>
+                }
+            </select>
+            <label for="Name" class="control-label">تصاویر</label>
+            <select class="form-select" aria-label="Select category" @bind="@SelectedPhotos" multiple>
+                @foreach (var item in photos)
+                {
+                        <option value="@item.Id">@item.Title</option>
+                }
+            </select>
+        </div>
+        <div class="form-group mt-2">
+            <input type="button" value="افزودن" @onclick="@Create" class="btn btn-primary" />
+        </div>
+    </div>
+</div>

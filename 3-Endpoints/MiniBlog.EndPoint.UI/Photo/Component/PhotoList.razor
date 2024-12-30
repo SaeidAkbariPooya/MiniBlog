@@ -1,0 +1,41 @@
+﻿@page "/photos"
+@inject Microsoft.AspNetCore.Components.NavigationManager navigation
+
+<PageTitle>لیست تصاویر</PageTitle>
+
+<h1>لیست تصاویر</h1>
+<button class="btn btn-primary mb-2" @onclick="@(() => navigation.NavigateTo("/photo/create"))">افزودن</button>
+@if (pagedData == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>عنوان</th>
+                <th>@*@nameof(PhotoModel.ImageUrl)*@تصاویر</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in pagedData.QueryResult)
+            {
+                <tr>
+                    <td>
+                        @counter @{
+                            counter++;
+                        }
+                    </td>
+                    <td>@item.Title</td>
+                    <td>@item.ImageUrl</td>
+                    <td>
+                        <button class="btn btn-info" @onclick="@(() => navigation.NavigateTo($"/photo/update/{item.Id}"))">ویرایش</button>
+                        <button class="btn btn-danger" @onclick="() => Delete(item.Id)">حذف</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
